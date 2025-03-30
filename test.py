@@ -7,7 +7,7 @@ import numpy as np
 
 cap = cv2.VideoCapture('http://<Pi_IP>:5000/video_feed')
 
-while True: #
+while True:
     ret, frame = cap.read()
     if not ret: break
     
