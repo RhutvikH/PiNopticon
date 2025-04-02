@@ -1,2 +1,2 @@
 # PiNopticon
-RPi all seeing eye
+Raspberry Pi all seeing eye
