@@ -4,7 +4,7 @@ import requests
 from ultralytics import YOLO
 
 # ------ Configuration ------
-PI_SERVER_URL = 'http://192.168.58.71:5000'  # Raspberry Pi's IP address
+PI_SERVER_URL = 'http://192.168.240.71:5000'  # Raspberry Pi's IP address
 VIDEO_STREAM_URL = f'{PI_SERVER_URL}/video_feed'
 MODEL_PATH = 'models/yolov8n.pt'  # YOLOv8 nano model for person detection
 

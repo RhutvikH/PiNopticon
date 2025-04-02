@@ -1,0 +1,66 @@
+// Raspberry Pi Surveillance System Flowchart
+digraph {
+	start [label="Start: Program execution begins."]
+	init [label="Initialize Configuration and Variables"]
+	open [label="Open Video Stream"]
+	stream_decision [label="Stream Opened Successfully?"]
+	error_stream [label="Print error: Unable to open video stream!"]
+	exit [label="Exit Program"]
+	main_loop [label="Main Loop"]
+	read_frame [label="Read Frame from Video Stream"]
+	frame_decision [label="Frame Read Successfully?"]
+	error_frame [label="Print error: Unable to read frame
+Break Loop"]
+	get_dimensions [label="Get Frame Dimensions"]
+	yolo [label="Run YOLOv8 Detection"]
+	persons_decision [label="Persons Detected?"]
+	select_bbox [label="Select Largest Bounding Box"]
+	draw_bbox [label="Draw Bounding Box and Label"]
+	calc_center [label="Calculate Bounding Box Center"]
+	compute_angle [label="Compute Target Servo Angle"]
+	set_base [label="Set Target Angle to Base"]
+	smooth [label="Smooth Target Angle"]
+	get_time [label="Get Current Time"]
+	update_time_decision [label="Time Since Last Update >= Interval?"]
+	angle_change_decision [label="Angle Change Exceeds Threshold?"]
+	send_servo [label="Send Servo Angle to Pi"]
+	update_tracking [label="Update Tracking Variables"]
+	display [label="Display Frame"]
+	quit_decision [label="Quit Key Pressed?"]
+	break_loop [label="Break Loop"]
+	cleanup [label=Cleanup]
+	end [label="End: Program terminates."]
+	start -> init
+	init -> open
+	open -> stream_decision
+	stream_decision -> main_loop [label=Yes]
+	stream_decision -> error_stream [label=No]
+	error_stream -> exit
+	main_loop -> read_frame
+	read_frame -> frame_decision
+	frame_decision -> get_dimensions [label=Yes]
+	frame_decision -> error_frame [label=No]
+	error_frame -> cleanup
+	get_dimensions -> yolo
+	yolo -> persons_decision
+	persons_decision -> select_bbox [label=Yes]
+	persons_decision -> set_base [label=No]
+	select_bbox -> draw_bbox
+	draw_bbox -> calc_center
+	calc_center -> compute_angle
+	compute_angle -> smooth
+	set_base -> smooth
+	smooth -> get_time
+	get_time -> update_time_decision
+	update_time_decision -> angle_change_decision [label=Yes]
+	update_time_decision -> display [label=No]
+	angle_change_decision -> send_servo [label=Yes]
+	angle_change_decision -> display [label=No]
+	send_servo -> update_tracking
+	update_tracking -> display
+	display -> quit_decision
+	quit_decision -> break_loop [label=Yes]
+	quit_decision -> read_frame [label=No]
+	break_loop -> cleanup
+	cleanup -> end
+}
